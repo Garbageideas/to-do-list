@@ -27,7 +27,7 @@ class TodoListApp extends StatefulWidget {
 }
 
 class _TodoListAppState extends State<TodoListApp> {
-  final _tasks = <Task>[];
+  final _tasks = <TaskWidget>[];
 
   @override
   Widget build(BuildContext context) {
@@ -50,9 +50,8 @@ class _TodoListAppState extends State<TodoListApp> {
           ],
         ),
         floatingActionButton: FloatingActionButton.extended(
-
           onPressed: _pressedAddBtn,
-          label: Text('Inbox'),
+          label: Text('Quick Add'),
           icon: Icon(Icons.add),
         ),
       ),
@@ -61,18 +60,33 @@ class _TodoListAppState extends State<TodoListApp> {
 
   _pressedAddBtn() {
     setState(() {
-      _tasks.add(Task(name: '${_tasks.length}'));
+      _tasks.add(TaskWidget(name: '${_tasks.length}'));
     });
     //_tasks.clear();
   }
 }
 
-class Task extends StatelessWidget {
+class TaskWidget extends StatefulWidget {
   String name;
   TaskStatus state;
   String project;
 
-  Task({@required this.name, this.project = 'none', this.state = TaskStatus.raw});
+  TaskWidget({@required this.name, this.project = 'none', this.state = TaskStatus.raw});
+
+  @override
+  _TaskWidgetState createState() => _TaskWidgetState(name, state, project);
+}
+
+class _TaskWidgetState extends State<TaskWidget> {
+  String name;
+  TaskStatus state;
+  String project;
+
+  _TaskWidgetState(String name, TaskStatus state, String project) {
+    this.name = name;
+    this.state = state;
+    this.project = project;
+  }
 
   @override
   Widget build(BuildContext context) {
