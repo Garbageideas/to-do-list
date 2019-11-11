@@ -60,7 +60,7 @@ class _TodoListAppState extends State<TodoListApp> {
 
   _pressedAddBtn() {
     setState(() {
-      _tasks.add(TaskWidget(name: '${_tasks.length}'));
+      _tasks.add(TaskWidget());
     });
     //_tasks.clear();
   }
@@ -71,7 +71,7 @@ class TaskWidget extends StatefulWidget {
   TaskStatus state;
   String project;
 
-  TaskWidget({@required this.name, this.project = 'none', this.state = TaskStatus.raw});
+  TaskWidget({this.name = '', this.project = '', this.state = TaskStatus.raw});
 
   @override
   _TaskWidgetState createState() => _TaskWidgetState(name, state, project);
@@ -80,40 +80,56 @@ class TaskWidget extends StatefulWidget {
 class _TaskWidgetState extends State<TaskWidget> {
   String name;
   TaskStatus state;
+  bool isCompleted = false;
   String project;
+  TextEditingController _textController = TextEditingController();
+  TextStyle _textStyle;
+  
+  final TextStyle _notCompletedTxtStyle = TextStyle(
+    decoration: TextDecoration.combine([]),
+    color: Colors.black,
+  );
+  final TextStyle _completedTxtStyle = TextStyle(
+    decoration: TextDecoration.combine([TextDecoration.lineThrough]),
+    color: Colors.grey,
+  );
 
   _TaskWidgetState(String name, TaskStatus state, String project) {
     this.name = name;
     this.state = state;
     this.project = project;
+    _textStyle = _notCompletedTxtStyle;
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.symmetric(vertical: 10.0),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Container(
-            margin: const EdgeInsets.only(right: 16.0),
-            child: CircleAvatar (
-              child: Text(name[0]),
-              backgroundColor: Colors.indigoAccent,
+    return Card(
+      margin: const EdgeInsets.symmetric(vertical: 2.0),
+      child: ListTile(
+        leading: Checkbox(
+          value: isCompleted,
+          onChanged: (bool newValue) {
+            setState(() {
+              isCompleted = newValue;
+              if(isCompleted) {
+                _textStyle = _completedTxtStyle;
+              } else {
+                _textStyle = _notCompletedTxtStyle;
+              }
 
+            });
+          },
+        ),
+        title: Container(
+          child: TextField(
+            style: _textStyle,
+            controller: _textController,
+            decoration: InputDecoration.collapsed(
+              hintText: "Type your task."
             ),
           ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Text(name, style: Theme.of(context).textTheme.subhead),
-              Container(
-                margin: const EdgeInsets.only(top: 5.0),
-                child: Text('Project: $project'),
-              ),
-            ],
-          ),
-        ],
+        ),
+        trailing: Icon(Icons.more_vert),
       ),
     );
   }
