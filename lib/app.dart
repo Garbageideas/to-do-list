@@ -28,6 +28,7 @@ class TodoListApp extends StatefulWidget {
 
 class _TodoListAppState extends State<TodoListApp> {
   final _tasks = <TaskWidget>[];
+  var serialNumber = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -43,8 +44,29 @@ class _TodoListAppState extends State<TodoListApp> {
             Flexible(
               child: ListView.builder(
                 padding: EdgeInsets.all(8.0),
-                itemBuilder: (_, int index) => _tasks[index],
                 itemCount: _tasks.length,
+                itemBuilder: (context, index) {
+                  final thisItem = _tasks[index];
+
+                  return Dismissible(
+                    key: thisItem.key,
+                    onDismissed: (direction) {
+                      setState(() {
+                        _tasks.removeAt(index);
+                      });
+                      Scaffold
+                        .of(context)
+                        .showSnackBar(SnackBar(content: Text("SWIPE TO REMOVE"),));
+                    },
+                    background: Container(
+                      color: Colors.red,
+                      child: Container(
+                        child: Center(child: Text('SWIPE TO REMOVE', style: TextStyle(color: Colors.white),),),
+                      ),
+                    ),
+                    child: _tasks[index],
+                  );
+                }
               ),
             ),
           ],
@@ -60,18 +82,22 @@ class _TodoListAppState extends State<TodoListApp> {
 
   _pressedAddBtn() {
     setState(() {
-      _tasks.add(TaskWidget());
+      //final keyString = '${serialNumber++}';
+      final keyString = '${DateTime.now()}';
+      print(keyString);
+      _tasks.add(TaskWidget(key:Key(keyString)));
     });
     //_tasks.clear();
   }
 }
 
 class TaskWidget extends StatefulWidget {
+  Key key;
   String name;
   TaskStatus state;
   String project;
 
-  TaskWidget({this.name = '', this.project = '', this.state = TaskStatus.raw});
+  TaskWidget({@required this.key, this.name = '', this.project = '', this.state = TaskStatus.raw});
 
   @override
   _TaskWidgetState createState() => _TaskWidgetState(name, state, project);
@@ -82,7 +108,7 @@ class _TaskWidgetState extends State<TaskWidget> {
   TaskStatus state;
   bool isCompleted = false;
   String project;
-  TextEditingController _textController = TextEditingController();
+  TextEditingController _textController;
   TextStyle _textStyle;
   
   final TextStyle _notCompletedTxtStyle = TextStyle(
@@ -95,14 +121,19 @@ class _TaskWidgetState extends State<TaskWidget> {
   );
 
   _TaskWidgetState(String name, TaskStatus state, String project) {
+    _textController = TextEditingController(text: name);
     this.name = name;
     this.state = state;
     this.project = project;
     _textStyle = _notCompletedTxtStyle;
+
+    print('create task widget');
   }
 
   @override
   Widget build(BuildContext context) {
+    _textController.text = name;
+
     return Card(
       margin: const EdgeInsets.symmetric(vertical: 2.0),
       child: ListTile(
@@ -123,13 +154,20 @@ class _TaskWidgetState extends State<TaskWidget> {
         title: Container(
           child: TextField(
             style: _textStyle,
+            autocorrect: false,
             controller: _textController,
             decoration: InputDecoration.collapsed(
-              hintText: "Type your task."
+              hintText: 'Type your task.'
             ),
+            onChanged: (text) {
+              name = text;
+              print(name);
+            },
           ),
         ),
-        trailing: Icon(Icons.more_vert),
+        trailing: Icon(
+          Icons.more_vert
+        ),
       ),
     );
   }
