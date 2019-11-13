@@ -13,8 +13,15 @@
 // limitations under the License.
 
 import 'package:flutter/material.dart';
-import 'package:to_do_list/screen/test_screen.dart';
+import 'package:provider/provider.dart';
+import 'package:to_do_list/models/todos.dart';
 import 'app.dart';
 
-void main() => runApp(TodoListApp());
-//void main() => runApp(TestViewApp());
+void main() => runApp(
+  MultiProvider(
+    providers: [
+      ChangeNotifierProvider(builder: (context) => TodosModel()),
+    ],
+    child: TodoListApp(),
+  )
+);

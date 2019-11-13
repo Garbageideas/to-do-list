@@ -14,12 +14,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:to_do_list/src/theme.dart';
-
-enum TaskStatus{
-  raw,
-  processed,
-  complete,
-}
+import 'package:to_do_list/models/todos.dart';
+import 'package:provider/provider.dart';
 
 class TodoListApp extends StatefulWidget {
   @override
@@ -32,6 +28,8 @@ class _TodoListAppState extends State<TodoListApp> {
 
   @override
   Widget build(BuildContext context) {
+    var _todos = Provider.of<TodosModel>(context);
+
     return MaterialApp(
       title: 'Garbage To-do list',
       theme: ProtoTheme.theme,
@@ -44,16 +42,14 @@ class _TodoListAppState extends State<TodoListApp> {
             Flexible(
               child: ListView.builder(
                 padding: EdgeInsets.all(8.0),
-                itemCount: _tasks.length,
+                itemCount: _todos.items.length,
                 itemBuilder: (context, index) {
-                  final thisItem = _tasks[index];
+                  final thisItem = _todos.items[index];
 
                   return Dismissible(
                     key: thisItem.key,
                     onDismissed: (direction) {
-                      setState(() {
-                        _tasks.removeAt(index);
-                      });
+                      _todos.remove(index);
                       Scaffold
                         .of(context)
                         .showSnackBar(SnackBar(content: Text("SWIPE TO REMOVE"),));
@@ -64,7 +60,7 @@ class _TodoListAppState extends State<TodoListApp> {
                         child: Center(child: Text('SWIPE TO REMOVE', style: TextStyle(color: Colors.white),),),
                       ),
                     ),
-                    child: _tasks[index],
+                    child: TaskWidget(),
                   );
                 }
               ),
@@ -72,7 +68,7 @@ class _TodoListAppState extends State<TodoListApp> {
           ],
         ),
         floatingActionButton: FloatingActionButton.extended(
-          onPressed: _pressedAddBtn,
+          onPressed: () => _todos.add(Task()),
           label: Text('Quick Add'),
           icon: Icon(Icons.add),
         ),
@@ -82,12 +78,9 @@ class _TodoListAppState extends State<TodoListApp> {
 
   _pressedAddBtn() {
     setState(() {
-      //final keyString = '${serialNumber++}';
       final keyString = '${DateTime.now()}';
-      print(keyString);
       _tasks.add(TaskWidget(key:Key(keyString)));
     });
-    //_tasks.clear();
   }
 }
 
@@ -97,7 +90,7 @@ class TaskWidget extends StatefulWidget {
   TaskStatus state;
   String project;
 
-  TaskWidget({@required this.key, this.name = '', this.project = '', this.state = TaskStatus.raw});
+  TaskWidget({this.key, this.name = '', this.project = '', this.state = TaskStatus.rawTask});
 
   @override
   _TaskWidgetState createState() => _TaskWidgetState(name, state, project);
@@ -121,18 +114,15 @@ class _TaskWidgetState extends State<TaskWidget> {
   );
 
   _TaskWidgetState(String name, TaskStatus state, String project) {
-    _textController = TextEditingController(text: name);
     this.name = name;
     this.state = state;
     this.project = project;
     _textStyle = _notCompletedTxtStyle;
-
-    print('create task widget');
   }
 
   @override
   Widget build(BuildContext context) {
-    _textController.text = name;
+    var _todos = Provider.of<TodosModel>(context);
 
     return Card(
       margin: const EdgeInsets.symmetric(vertical: 2.0),
@@ -160,8 +150,7 @@ class _TaskWidgetState extends State<TaskWidget> {
               hintText: 'Type your task.'
             ),
             onChanged: (text) {
-              name = text;
-              print(name);
+              // TODO:: todos model 속 텍스트를 변경해야 하는데 index값을 알 수 없어서 검토 필요. key 값 기반으로 찾아야 할 듯.
             },
           ),
         ),
