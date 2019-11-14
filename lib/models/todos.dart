@@ -69,4 +69,8 @@ class TodosModel extends ChangeNotifier {
   void remove(int index) {
     _tasks.removeAt(index);
   }
+
+  void removeByKey(Key keyToFind) {
+    _tasks.removeWhere((item) => (item.key == keyToFind));
+  }
 }

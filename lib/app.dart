@@ -49,10 +49,10 @@ class _TodoListAppState extends State<TodoListApp> {
                     return Dismissible(
                       key: thisItem.key,
                       onDismissed: (direction) {
-                      _todos.remove(index);
-                        Scaffold
-                          .of(context)
-                          .showSnackBar(SnackBar(content: Text("SWIPE TO REMOVE"),));
+                        _todos.removeByKey(thisItem.key);
+                          Scaffold
+                            .of(context)
+                            .showSnackBar(SnackBar(content: Text("SWIPE TO REMOVE"),));
                       },
                       background: Container(
                         color: Colors.red,
@@ -118,7 +118,7 @@ class _TaskWidgetState extends State<TaskWidget> {
           value: _isChecked,
           onChanged: (bool newValue) {
             setState(() {_todos.items[index].isCompleted = newValue;});
-            
+
           },
         ),
         title: Container(
