@@ -16,7 +16,6 @@ import 'package:flutter/material.dart';
 import 'package:to_do_list/src/theme.dart';
 import 'package:to_do_list/models/todos.dart';
 import 'package:provider/provider.dart';
-import 'package:to_do_list/src/theme.dart';
 
 class TodoListApp extends StatefulWidget {
   @override
