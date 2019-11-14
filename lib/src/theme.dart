@@ -13,6 +13,8 @@ class ProtoTheme {
   static const yellow = Color(0xfff6d55c);
   static const red = Color(0xffed553b);
 
+  static const num elevationLayerOne = 5.0;
+
 
   static get theme {
     final originalTextTheme = ThemeData.dark().textTheme;
