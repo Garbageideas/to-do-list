@@ -21,17 +21,6 @@ class Task {
   TaskStatus state;  
   String context;
   bool get isCompleted => (state==TaskStatus.completed);
-  set isCompleted(bool b) {
-    if(b == true) {
-      state = TaskStatus.completed;
-    } else {
-      if(_hasProcessedCondition()) {
-        state = TaskStatus.processed;
-      } else {
-        state = TaskStatus.rawTask;
-      }
-    }
-  }
 
   Task({this.key, this.name, this.project = '', this.state = TaskStatus.rawTask, this.context = ''});
 
@@ -68,9 +57,30 @@ class TodosModel extends ChangeNotifier {
 
   void remove(int index) {
     _tasks.removeAt(index);
+    notifyListeners();
   }
 
   void removeByKey(Key keyToFind) {
     _tasks.removeWhere((item) => (item.key == keyToFind));
+    notifyListeners();
+  }
+
+  bool getChecked(int index) => _tasks[index].state==TaskStatus.completed;
+
+  setChecked(int index, bool newValue) {
+    if(newValue == true) {
+      _tasks[index].state = TaskStatus.completed;
+    } else {
+      if(_tasks[index]._hasProcessedCondition()) {
+        _tasks[index].state = TaskStatus.processed;
+      } else {
+        _tasks[index].state = TaskStatus.rawTask;
+      }
+    }
+    notifyListeners();
+  }
+
+  setName(int index, String newValue) {
+    _tasks[index].name = newValue;
   }
 }

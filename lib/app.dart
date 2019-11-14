@@ -96,13 +96,7 @@ class _TaskWidgetState extends State<TaskWidget> {
   final Task task;
   final int index;
   TextEditingController _textController;
-  bool get _isChecked {
-    return task.isCompleted;
-  }
-  TextStyle get _textStyle {
-    return (_isChecked ? _checkedTxtStyle : _notCheckedTxtStyle);
-  }
-  
+
   _TaskWidgetState({this.key, this.task, this.index}) {
     _textController = TextEditingController(text: task.name);
   }
@@ -115,23 +109,22 @@ class _TaskWidgetState extends State<TaskWidget> {
       margin: const EdgeInsets.symmetric(vertical: 2.0),
       child: ListTile(
         leading: Checkbox(
-          value: _isChecked,
+          value: _todos.getChecked(index),
           onChanged: (bool newValue) {
-            setState(() {_todos.items[index].isCompleted = newValue;});
+            _todos.setChecked(index, newValue);
 
           },
         ),
         title: Container(
           child: TextField(
-            style: _textStyle,
+            style: _todos.getChecked(index) ? _checkedTxtStyle : _notCheckedTxtStyle,
             autocorrect: false,
             controller: _textController,
             decoration: InputDecoration.collapsed(
               hintText: 'Type your task.'
             ),
             onChanged: (text) {
-              setState(() {_todos.items[index].name = text;});
-              
+              _todos.setName(index, text);
             },
           ),
         ),
