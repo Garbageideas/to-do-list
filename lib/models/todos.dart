@@ -47,7 +47,9 @@ class Task {
 class TodosModel extends ChangeNotifier {
   final List<Task> _tasks = [];
 
-  List<Task> get items => _tasks;
+  int get length {
+    return _tasks.length;
+  }
 
   void add(Task task) {
     task.key = Key('${DateTime.now()}');
@@ -82,5 +84,13 @@ class TodosModel extends ChangeNotifier {
 
   setName(int index, String newValue) {
     _tasks[index].name = newValue;
+  }
+
+  String getName(int index) {
+    return _tasks[index].name;
+  }
+
+  Key getKey(int index) {
+    return _tasks[index].key;
   }
 }

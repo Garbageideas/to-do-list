@@ -42,14 +42,13 @@ class _TodoListAppState extends State<TodoListApp> {
               builder: (context, todos, child) => Flexible(
                 child: ListView.builder(
                   padding: EdgeInsets.all(8.0),
-                  itemCount: todos.items.length,
+                  itemCount: todos.length,
                   itemBuilder: (context, index) {
-                    final thisItem = todos.items[index];
 
                     return Dismissible(
-                      key: thisItem.key,
+                      key: todos.getKey(index),
                       onDismissed: (direction) {
-                        _todos.removeByKey(thisItem.key);
+                        _todos.removeByKey(todos.getKey(index));
                           Scaffold
                             .of(context)
                             .showSnackBar(SnackBar(content: Text("SWIPE TO REMOVE"),));
@@ -60,7 +59,7 @@ class _TodoListAppState extends State<TodoListApp> {
                           child: Center(child: Text('SWIPE TO REMOVE', style: TextStyle(color: Colors.white),),),
                         ),
                       ),
-                      child: TaskWidget(key: thisItem.key, task: thisItem, index: index),
+                      child: TaskWidget(index: index, name: todos.getName(index)),
                     );
                   }
                 ),
@@ -81,24 +80,22 @@ class _TodoListAppState extends State<TodoListApp> {
 }
 
 class TaskWidget extends StatefulWidget {
-  final Key key;
-  final Task task;
   final int index;
+  final String name;
 
-  TaskWidget({this.key, this.task, this.index});
+  TaskWidget({this.index, this.name});
 
   @override
-  _TaskWidgetState createState() => _TaskWidgetState(key: key, task: task, index: index);
+  _TaskWidgetState createState() => _TaskWidgetState(index: index, name: name);
 }
 
 class _TaskWidgetState extends State<TaskWidget> {
-  final Key key;
-  final Task task;
   final int index;
+  final String name;
   TextEditingController _textController;
 
-  _TaskWidgetState({this.key, this.task, this.index}) {
-    _textController = TextEditingController(text: task.name);
+  _TaskWidgetState({this.index, this.name}) {
+    _textController = TextEditingController(text: name);
   }
 
   @override
