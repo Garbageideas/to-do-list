@@ -17,7 +17,7 @@ import 'package:to_do_list/src/theme.dart';
 import 'package:to_do_list/models/todos.dart';
 import 'package:provider/provider.dart';
 import 'package:circular_check_box/circular_check_box.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:cloud_firestore/cloud_firestore.dart';
 
 class TodoListApp extends StatefulWidget {
   @override
@@ -28,6 +28,8 @@ class _TodoListAppState extends State<TodoListApp> {
   @override
   Widget build(BuildContext context) {
     var _todos = Provider.of<TodosModel>(context);
+
+    // Firestore.instance.collection("task").document("temp2").setData({"memo" :"junsik"});
 
     return MaterialApp(
       title: 'Garbage To-do list',
