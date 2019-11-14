@@ -6,20 +6,28 @@ import 'package:flutter/material.dart';
 
 // copied from vanilla archtecture example
 class ProtoTheme {
+
+  static const darkBlue = Color(0xff173f5f);
+  static const blue = Color(0xff20639b);
+  static const green = Color(0xff3caea3);
+  static const yellow = Color(0xfff6d55c);
+  static const red = Color(0xffed553b);
+
+
   static get theme {
-    final originalTextTheme = ThemeData.light().textTheme;
+    final originalTextTheme = ThemeData.dark().textTheme;
     final originalBody1 = originalTextTheme.body1;
 
     return ThemeData.light().copyWith(
-        primaryColor: Colors.indigo[800],
+        primaryColor: ProtoTheme.darkBlue,
         accentColor: Colors.indigoAccent[300],
         buttonColor: Colors.indigo[800],
-        textSelectionColor: Colors.cyan[100],
+        textSelectionColor: ProtoTheme.yellow,
         backgroundColor: Colors.white,
-        toggleableActiveColor: Colors.blueAccent[300],
+        toggleableActiveColor: ProtoTheme.yellow,
         floatingActionButtonTheme: FloatingActionButtonThemeData (
 //          foregroundColor: Colors.black,
-          backgroundColor: Colors.indigo,
+          backgroundColor: ProtoTheme.darkBlue,
         ),
         textTheme: originalTextTheme.copyWith(
             body1:

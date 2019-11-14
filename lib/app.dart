@@ -16,6 +16,7 @@ import 'package:flutter/material.dart';
 import 'package:to_do_list/src/theme.dart';
 import 'package:to_do_list/models/todos.dart';
 import 'package:provider/provider.dart';
+import 'package:to_do_list/src/theme.dart';
 
 class TodoListApp extends StatefulWidget {
   @override
@@ -54,9 +55,9 @@ class _TodoListAppState extends State<TodoListApp> {
                             .showSnackBar(SnackBar(content: Text("SWIPE TO REMOVE"),));
                       },
                       background: Container(
-                        color: Colors.red,
+                        color: ProtoTheme.red,
                         child: Container(
-                          child: Center(child: Text('SWIPE TO REMOVE', style: TextStyle(color: Colors.white),),),
+                          child: Center(child: Text('SWIPE TO REMOVE', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),),
                         ),
                       ),
                       child: TaskWidget(index: index, name: todos.getName(index)),
@@ -70,6 +71,7 @@ class _TodoListAppState extends State<TodoListApp> {
         floatingActionButton: FloatingActionButton.extended(
           onPressed: () {
             _todos.add(Task());
+
           },
           label: Text('Quick Add'),
           icon: Icon(Icons.add),
