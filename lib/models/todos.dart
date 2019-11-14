@@ -23,17 +23,17 @@ class Task {
   bool get isCompleted => (state==TaskStatus.completed);
   set isCompleted(bool b) {
     if(b == true) {
+      state = TaskStatus.completed;
+    } else {
       if(_hasProcessedCondition()) {
         state = TaskStatus.processed;
       } else {
         state = TaskStatus.rawTask;
       }
-    } else {
-      state = TaskStatus.completed;
     }
   }
 
-  Task({this.key, this.name = '', this.project = '', this.state = TaskStatus.rawTask, this.context = ''});
+  Task({this.key, this.name, this.project = '', this.state = TaskStatus.rawTask, this.context = ''});
 
   bool _hasProcessedCondition() {
     switch(PreferenceOfTask.taskProcessedCondition)

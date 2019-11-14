@@ -23,8 +23,6 @@ class TodoListApp extends StatefulWidget {
 }
 
 class _TodoListAppState extends State<TodoListApp> {
-  final _tasks = <TaskWidget>[];
-  var serialNumber = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -39,106 +37,88 @@ class _TodoListAppState extends State<TodoListApp> {
         ),
         body: Column(
           children: <Widget>[
-            Flexible(
-              child: ListView.builder(
-                padding: EdgeInsets.all(8.0),
-                itemCount: _todos.items.length,
-                itemBuilder: (context, index) {
-                  final thisItem = _todos.items[index];
+            Consumer<TodosModel>(
 
-                  return Dismissible(
-                    key: thisItem.key,
-                    onDismissed: (direction) {
+              builder: (context, todos, child) => Flexible(
+                child: ListView.builder(
+                  padding: EdgeInsets.all(8.0),
+                  itemCount: todos.items.length,
+                  itemBuilder: (context, index) {
+                    final thisItem = todos.items[index];
+
+                    return Dismissible(
+                      key: thisItem.key,
+                      onDismissed: (direction) {
                       _todos.remove(index);
-                      Scaffold
-                        .of(context)
-                        .showSnackBar(SnackBar(content: Text("SWIPE TO REMOVE"),));
-                    },
-                    background: Container(
-                      color: Colors.red,
-                      child: Container(
-                        child: Center(child: Text('SWIPE TO REMOVE', style: TextStyle(color: Colors.white),),),
+                        Scaffold
+                          .of(context)
+                          .showSnackBar(SnackBar(content: Text("SWIPE TO REMOVE"),));
+                      },
+                      background: Container(
+                        color: Colors.red,
+                        child: Container(
+                          child: Center(child: Text('SWIPE TO REMOVE', style: TextStyle(color: Colors.white),),),
+                        ),
                       ),
-                    ),
-                    child: TaskWidget(),
-                  );
-                }
+                      child: TaskWidget(key: thisItem.key, task: thisItem, index: index),
+                    );
+                  }
+                ),
               ),
             ),
           ],
         ),
         floatingActionButton: FloatingActionButton.extended(
-          onPressed: () => _todos.add(Task()),
+          onPressed: () {
+            _todos.add(Task());
+          },
           label: Text('Quick Add'),
           icon: Icon(Icons.add),
         ),
       ),
     );
   }
-
-  _pressedAddBtn() {
-    setState(() {
-      final keyString = '${DateTime.now()}';
-      _tasks.add(TaskWidget(key:Key(keyString)));
-    });
-  }
 }
 
 class TaskWidget extends StatefulWidget {
-  Key key;
-  String name;
-  TaskStatus state;
-  String project;
+  final Key key;
+  final Task task;
+  final int index;
 
-  TaskWidget({this.key, this.name = '', this.project = '', this.state = TaskStatus.rawTask});
+  TaskWidget({this.key, this.task, this.index});
 
   @override
-  _TaskWidgetState createState() => _TaskWidgetState(name, state, project);
+  _TaskWidgetState createState() => _TaskWidgetState(key: key, task: task, index: index);
 }
 
 class _TaskWidgetState extends State<TaskWidget> {
-  String name;
-  TaskStatus state;
-  bool isCompleted = false;
-  String project;
+  final Key key;
+  final Task task;
+  final int index;
   TextEditingController _textController;
-  TextStyle _textStyle;
+  bool get _isChecked {
+    return task.isCompleted;
+  }
+  TextStyle get _textStyle {
+    return (_isChecked ? _checkedTxtStyle : _notCheckedTxtStyle);
+  }
   
-  final TextStyle _notCompletedTxtStyle = TextStyle(
-    decoration: TextDecoration.combine([]),
-    color: Colors.black,
-  );
-  final TextStyle _completedTxtStyle = TextStyle(
-    decoration: TextDecoration.combine([TextDecoration.lineThrough]),
-    color: Colors.grey,
-  );
-
-  _TaskWidgetState(String name, TaskStatus state, String project) {
-    this.name = name;
-    this.state = state;
-    this.project = project;
-    _textStyle = _notCompletedTxtStyle;
+  _TaskWidgetState({this.key, this.task, this.index}) {
+    _textController = TextEditingController(text: task.name);
   }
 
   @override
   Widget build(BuildContext context) {
-    var _todos = Provider.of<TodosModel>(context);
+    TodosModel _todos = Provider.of<TodosModel>(context);
 
     return Card(
       margin: const EdgeInsets.symmetric(vertical: 2.0),
       child: ListTile(
         leading: Checkbox(
-          value: isCompleted,
+          value: _isChecked,
           onChanged: (bool newValue) {
-            setState(() {
-              isCompleted = newValue;
-              if(isCompleted) {
-                _textStyle = _completedTxtStyle;
-              } else {
-                _textStyle = _notCompletedTxtStyle;
-              }
-
-            });
+            setState(() {_todos.items[index].isCompleted = newValue;});
+            
           },
         ),
         title: Container(
@@ -150,7 +130,8 @@ class _TaskWidgetState extends State<TaskWidget> {
               hintText: 'Type your task.'
             ),
             onChanged: (text) {
-              // TODO:: todos model 속 텍스트를 변경해야 하는데 index값을 알 수 없어서 검토 필요. key 값 기반으로 찾아야 할 듯.
+              setState(() {_todos.items[index].name = text;});
+              
             },
           ),
         ),
@@ -160,4 +141,13 @@ class _TaskWidgetState extends State<TaskWidget> {
       ),
     );
   }
+
+  static final TextStyle _notCheckedTxtStyle = TextStyle(
+    decoration: TextDecoration.combine([]),
+    color: Colors.black,
+  );
+  static final TextStyle _checkedTxtStyle = TextStyle(
+    decoration: TextDecoration.combine([TextDecoration.lineThrough]),
+    color: Colors.grey,
+  );
 }
