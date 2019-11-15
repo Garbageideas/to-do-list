@@ -20,51 +20,54 @@ class InboxScreen extends StatelessWidget {
           elevation: 0.0,
           title: Text('Garbageideas Todolist'),
         ),
-        body: Column(
-          children: <Widget>[
-            Consumer<TodosModel>(
-              builder: (context, todos, child) => Flexible(
-                child: ListView.builder(
-                    padding: EdgeInsets.all(8.0),
-                    itemCount: todos.length,
-                    itemBuilder: (context, index) {
-                      return Dismissible(
-                        direction: DismissDirection.endToStart,
-                        key: todos.getKey(index),
-                        onDismissed: (direction) {
-                          _todos.removeByKey(todos.getKey(index));
-                          Scaffold.of(context).showSnackBar(SnackBar(
-                            content: Text('Forget it!'),
-                          ));
-                        },
-                        background: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 20.0),
-                          child: Container(
-                            alignment: Alignment.center,
-                            color: ProtoTheme.red,
+        body: GestureDetector(
+          onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
+          child: Column(
+            children: <Widget>[
+              Flexible(
+                child: Consumer<TodosModel>(
+                  builder: (context, todos, child) => ListView.builder(
+                      padding: EdgeInsets.all(8.0),
+                      itemCount: todos.length,
+                      itemBuilder: (context, index) {
+                        return Dismissible(
+                          direction: DismissDirection.endToStart,
+                          key: todos.getKey(index),
+                          onDismissed: (direction) {
+                            _todos.removeByKey(todos.getKey(index));
+                            Scaffold.of(context).showSnackBar(SnackBar(
+                              content: Text('Forget it!'),
+                            ));
+                          },
+                          background: Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 20.0),
                             child: Container(
-                              child: Padding(
-                                padding: const EdgeInsets.all(5.0),
-                                child: Align(
-                                  alignment: Alignment.centerRight,
-                                  child: Text(
-                                    'SWIFE TO REMOVE',
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold),
+                              alignment: Alignment.center,
+                              color: ProtoTheme.red,
+                              child: Container(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(5.0),
+                                  child: Align(
+                                    alignment: Alignment.centerRight,
+                                    child: Text(
+                                      'SWIFE TO REMOVE',
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold),
+                                    ),
                                   ),
                                 ),
                               ),
                             ),
                           ),
-                        ),
-                        child: TaskWidget(
-                            index: index, name: todos.getName(index)),
-                      );
-                    }),
+                          child: TaskWidget(
+                              index: index, name: todos.getName(index)),
+                        );
+                      }),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
         floatingActionButton: FloatingActionButton.extended(
           elevation: ProtoTheme.elevationLayerOne,
