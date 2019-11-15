@@ -8,17 +8,21 @@ import 'package:to_do_list/overview/routes.dart';
 import 'package:to_do_list/models/todos.dart';
 
 class InboxScreen extends StatelessWidget {
+  final scaffoldKey = GlobalKey<ScaffoldState>();
+
   @override
   Widget build(BuildContext context) {
     var _todos = Provider.of<TodosModel>(context);
+    
 
     return Container(
       child: Scaffold(
+        key: scaffoldKey,
         appBar: AppBar(
           elevation: 0.0,
           title: Row(
             children: <Widget>[
-              Icon(Icons.check, color: Colors.white,),
+              Icon(Icons.done_all, color: Colors.white,),
               Text('Garbageideas Todolist', style: TextStyle(color: Colors.white, fontSize: 14.0),),
             ],
           ),
@@ -38,10 +42,7 @@ class InboxScreen extends StatelessWidget {
                           key: todos.getKey(index),
                           onDismissed: (direction) {
                             _todos.removeByKey(todos.getKey(index));
-                            Scaffold.of(context).showSnackBar(SnackBar(
-                              content: Text('Removed.'),
-                              //backgroundColor: ProtoTheme.red,
-                            ));
+                            _showSnackBar('Removed.');
                           },
                           background: Padding(
                             padding: const EdgeInsets.symmetric(vertical: 20.0),
@@ -76,23 +77,23 @@ class InboxScreen extends StatelessWidget {
         bottomNavigationBar: BottomNavigationBar(
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              title: Text('Home'),
+              icon: Icon(Icons.inbox),
+              title: Text('Inbox'),
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.business),
-              title: Text('Business'),
+              icon: Icon(Icons.calendar_view_day),
+              title: Text('Timeline'),
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.school),
-              title: Text('School'),
+              icon: Icon(Icons.playlist_add_check),
+              title: Text('Project'),
             ),
           ],
           currentIndex: 0,
           backgroundColor: ProtoTheme.darkBlue,
           unselectedItemColor: Colors.white,
           selectedItemColor: ProtoTheme.yellow,
-          onTap: (int newTab) => {},
+          onTap: (int newTab) => _showSnackBar('It`s not support yet.'),
         ),
         floatingActionButton: FloatingActionButton.extended(
           elevation: ProtoTheme.elevationLayerOne,
@@ -106,6 +107,8 @@ class InboxScreen extends StatelessWidget {
       ),
     );
   }
+
+  _showSnackBar(String message) => scaffoldKey.currentState.showSnackBar(SnackBar(content: Text(message)));
 }
 
 class TaskWidget extends StatefulWidget {

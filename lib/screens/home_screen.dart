@@ -30,7 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
         radius: 48.0,
         child: Row(
           children: [
-            Icon(Icons.check, color: ProtoTheme.yellow),
+            Icon(Icons.done_all, color: ProtoTheme.yellow),
             Text(
               'Garbageideas',
               style: TextStyle(color: ProtoTheme.yellow),
@@ -45,7 +45,6 @@ class _HomeScreenState extends State<HomeScreen> {
       controller: _emailBoxController,
       keyboardType: TextInputType.emailAddress,
       autofocus: false,
-      //initialValue: 'geust@gmail.com',
       decoration: InputDecoration(
         hintText: 'Email',
         contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
@@ -56,7 +55,6 @@ class _HomeScreenState extends State<HomeScreen> {
     TextFormField password = TextFormField(
       controller: _passwordBoxController,
       autofocus: false,
-      //initialValue: 'geust',
       obscureText: true,
       decoration: InputDecoration(
         hintText: 'Password',
@@ -125,6 +123,5 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  _showSnackBar(String message) =>
-      scaffoldKey.currentState.showSnackBar(SnackBar(content: Text(message)));
+  _showSnackBar(String message) => scaffoldKey.currentState.showSnackBar(SnackBar(content: Text(message)));
 }
