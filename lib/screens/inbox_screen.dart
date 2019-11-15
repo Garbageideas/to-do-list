@@ -31,7 +31,7 @@ class InboxScreen extends StatelessWidget {
                       itemCount: todos.length,
                       itemBuilder: (context, index) {
                         return Dismissible(
-                          direction: DismissDirection.endToStart,
+                          //direction: DismissDirection.endToStart,
                           key: todos.getKey(index),
                           onDismissed: (direction) {
                             _todos.removeByKey(todos.getKey(index));
@@ -47,8 +47,8 @@ class InboxScreen extends StatelessWidget {
                               child: Container(
                                 child: Padding(
                                   padding: const EdgeInsets.all(5.0),
-                                  child: Align(
-                                    alignment: Alignment.centerRight,
+                                  child: Center(
+                                    //alignment: Alignment.centerRight,
                                     child: Text(
                                       'SWIFE TO REMOVE',
                                       style: TextStyle(
@@ -110,7 +110,7 @@ class _TaskWidgetState extends State<TaskWidget> {
         borderRadius: BorderRadius.circular(15.0),
       ),
       elevation: ProtoTheme.elevationLayerOne,
-      margin: const EdgeInsets.symmetric(vertical: 10.0),
+      margin: const EdgeInsets.symmetric(vertical: 4.0),
       child: ListTile(
         leading: CircularCheckBox(
           value: _todos.getChecked(index),
@@ -132,7 +132,7 @@ class _TaskWidgetState extends State<TaskWidget> {
           ),
         ),
         trailing: IconButton(
-          icon: Icon(Icons.more_horiz),
+          icon: Icon(Icons.keyboard_arrow_right),
           onPressed: () => Navigator.pushNamed(context, ScreenRoutes.organizer),
         ),
       ),
@@ -142,9 +142,11 @@ class _TaskWidgetState extends State<TaskWidget> {
   static final TextStyle _notCheckedTxtStyle = TextStyle(
     decoration: TextDecoration.combine([]),
     color: Colors.black,
+    fontSize: 18.0,
   );
   static final TextStyle _checkedTxtStyle = TextStyle(
     decoration: TextDecoration.combine([TextDecoration.lineThrough]),
     color: Colors.grey,
+    fontSize: 18.0,
   );
 }
