@@ -31,6 +31,7 @@ class _TodoListAppState extends State<TodoListApp> {
 
     return MaterialApp(
       title: 'Garbage To-do list',
+      debugShowCheckedModeBanner: false,
       theme: ProtoTheme.theme,
       initialRoute: ScreenRoutes.initialRoute,
       routes: ScreenRoutes.routes,

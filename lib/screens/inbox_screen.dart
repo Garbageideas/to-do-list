@@ -7,8 +7,6 @@ import 'package:to_do_list/overview/theme.dart';
 import 'package:to_do_list/overview/routes.dart';
 import 'package:to_do_list/models/todos.dart';
 
-//import 'package:flutter_backdrop/flutter_backdrop.dart';
-
 class InboxScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -18,7 +16,12 @@ class InboxScreen extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           elevation: 0.0,
-          title: Text('Garbageideas Todolist'),
+          title: Row(
+            children: <Widget>[
+              Icon(Icons.check, color: Colors.white,),
+              Text('Garbageideas Todolist', style: TextStyle(color: Colors.white, fontSize: 14.0),),
+            ],
+          ),
         ),
         body: GestureDetector(
           onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
@@ -36,7 +39,8 @@ class InboxScreen extends StatelessWidget {
                           onDismissed: (direction) {
                             _todos.removeByKey(todos.getKey(index));
                             Scaffold.of(context).showSnackBar(SnackBar(
-                              content: Text('Forget it!'),
+                              content: Text('Removed.'),
+                              //backgroundColor: ProtoTheme.red,
                             ));
                           },
                           background: Padding(
@@ -69,6 +73,27 @@ class InboxScreen extends StatelessWidget {
             ],
           ),
         ),
+        bottomNavigationBar: BottomNavigationBar(
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              title: Text('Home'),
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.business),
+              title: Text('Business'),
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.school),
+              title: Text('School'),
+            ),
+          ],
+          currentIndex: 0,
+          backgroundColor: ProtoTheme.darkBlue,
+          unselectedItemColor: Colors.white,
+          selectedItemColor: ProtoTheme.yellow,
+          onTap: (int newTab) => {},
+        ),
         floatingActionButton: FloatingActionButton.extended(
           elevation: ProtoTheme.elevationLayerOne,
           onPressed: () {
@@ -77,6 +102,7 @@ class InboxScreen extends StatelessWidget {
           label: Text('Quick Add'),
           icon: Icon(Icons.add),
         ),
+        
       ),
     );
   }
