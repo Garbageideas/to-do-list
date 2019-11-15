@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:to_do_list/src/theme.dart';
-import 'package:to_do_list/models/todos.dart';
+
 import 'package:provider/provider.dart';
 import 'package:circular_check_box/circular_check_box.dart';
 
-class InboxScreen extends StatelessWidget {
-  const InboxScreen({Key key}) : super(key: key);
-  
+import 'package:to_do_list/overview/theme.dart';
+import 'package:to_do_list/overview/routes.dart';
+import 'package:to_do_list/models/todos.dart';
 
+//import 'package:flutter_backdrop/flutter_backdrop.dart';
+
+class InboxScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var _todos = Provider.of<TodosModel>(context);
@@ -104,7 +106,6 @@ class _TaskWidgetState extends State<TaskWidget> {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(15.0),
       ),
- 
       elevation: ProtoTheme.elevationLayerOne,
       margin: const EdgeInsets.symmetric(vertical: 10.0),
       child: ListTile(
@@ -127,7 +128,10 @@ class _TaskWidgetState extends State<TaskWidget> {
             },
           ),
         ),
-        trailing: Icon(Icons.more_horiz),
+        trailing: IconButton(
+          icon: Icon(Icons.more_horiz),
+          onPressed: () => Navigator.pushNamed(context, ScreenRoutes.organizer),
+        ),
       ),
     );
   }

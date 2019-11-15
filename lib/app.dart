@@ -14,10 +14,8 @@
 
 import 'package:flutter/material.dart';
 
-import 'package:to_do_list/src/theme.dart';
-import 'package:to_do_list/screens/inbox_screen.dart';
-import 'package:to_do_list/screens/test_screen.dart';
-
+import 'package:to_do_list/overview/theme.dart';
+import 'package:to_do_list/overview/routes.dart';
 
 // import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -29,17 +27,13 @@ class TodoListApp extends StatefulWidget {
 class _TodoListAppState extends State<TodoListApp> {
   @override
   Widget build(BuildContext context) {
-
     // Firestore.instance.collection("task").document("temp2").setData({"memo" :"junsik"});
 
     return MaterialApp(
       title: 'Garbage To-do list',
       theme: ProtoTheme.theme,
-      initialRoute: '/',
-      routes: {
-        '/': (context) => InboxScreen(),
-        '/second': (context) => TestViewApp(),
-      },
+      initialRoute: ScreenRoutes.initialRoute,
+      routes: ScreenRoutes.routes,
     );
   }
 }

@@ -45,7 +45,7 @@ class Task {
 }
 
 class TodosModel extends ChangeNotifier {
-  final List<Task> _tasks = [];
+  final List<Task> _tasks = []; /* local database. */
 
   int get length {
     return _tasks.length;
