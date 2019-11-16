@@ -10,14 +10,14 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final scaffoldKey = GlobalKey<ScaffoldState>();
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
   TextEditingController _emailBoxController;
   TextEditingController _passwordBoxController;
 
   @override
   void initState() {
-    _emailBoxController = TextEditingController(text: '');
-    _passwordBoxController = TextEditingController(text: '');
+    _emailBoxController = TextEditingController(text: 'guest');
+    _passwordBoxController = TextEditingController(text: 'guest');
     super.initState();
   }
 
@@ -101,7 +101,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
 
     return Scaffold(
-      key: scaffoldKey,
+      key: _scaffoldKey,
       backgroundColor: ProtoTheme.darkBlue,
       body: Builder(
           builder: (conxtext) => Center(
@@ -123,5 +123,5 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  _showSnackBar(String message) => scaffoldKey.currentState.showSnackBar(SnackBar(content: Text(message)));
+  _showSnackBar(String message) => _scaffoldKey.currentState.showSnackBar(SnackBar(content: Text(message)));
 }

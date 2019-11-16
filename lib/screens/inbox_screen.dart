@@ -8,7 +8,7 @@ import 'package:to_do_list/overview/routes.dart';
 import 'package:to_do_list/models/todos.dart';
 
 class InboxScreen extends StatelessWidget {
-  final scaffoldKey = GlobalKey<ScaffoldState>();
+  //final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +17,7 @@ class InboxScreen extends StatelessWidget {
 
     return Container(
       child: Scaffold(
-        key: scaffoldKey,
+        //key: scaffoldKey,
         appBar: AppBar(
           elevation: 0.0,
           title: Row(
@@ -108,7 +108,8 @@ class InboxScreen extends StatelessWidget {
     );
   }
 
-  _showSnackBar(String message) => scaffoldKey.currentState.showSnackBar(SnackBar(content: Text(message)));
+  //_showSnackBar(String message) => scaffoldKey.currentState.showSnackBar(SnackBar(content: Text(message)));
+  _showSnackBar(String message) => {};
 }
 
 class TaskWidget extends StatefulWidget {
