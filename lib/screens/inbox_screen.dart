@@ -42,10 +42,11 @@ class InboxScreen extends StatelessWidget {
                           key: todos.getKey(index),
                           onDismissed: (direction) {
                             _todos.removeByKey(todos.getKey(index));
-                            _showSnackBar('Removed.');
+                            Scaffold.of(context).showSnackBar(SnackBar(content: Text('Removed.'),));
+                            //_showSnackBar('Removed.');
                           },
                           background: Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 20.0),
+                            padding: EdgeInsets.symmetric(vertical: 20.0),
                             child: Container(
                               alignment: Alignment.center,
                               color: ProtoTheme.red,
@@ -90,12 +91,13 @@ class InboxScreen extends StatelessWidget {
             ),
           ],
           currentIndex: 0,
-          backgroundColor: ProtoTheme.darkBlue,
+          backgroundColor: ProtoTheme.purple,
           unselectedItemColor: Colors.white,
           selectedItemColor: ProtoTheme.yellow,
           onTap: (int newTab) => _showSnackBar('It`s not support yet.'),
         ),
         floatingActionButton: FloatingActionButton.extended(
+          backgroundColor: Colors.deepPurple,
           elevation: ProtoTheme.elevationLayerOne,
           onPressed: () {
             _todos.add(Task());
@@ -140,7 +142,7 @@ class _TaskWidgetState extends State<TaskWidget> {
         borderRadius: BorderRadius.circular(15.0),
       ),
       elevation: ProtoTheme.elevationLayerOne,
-      margin: const EdgeInsets.symmetric(vertical: 4.0),
+      margin: EdgeInsets.symmetric(vertical: 8.0),
       child: ListTile(
         leading: CircularCheckBox(
           value: _todos.getChecked(index),

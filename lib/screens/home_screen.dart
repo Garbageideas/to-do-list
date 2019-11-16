@@ -30,10 +30,10 @@ class _HomeScreenState extends State<HomeScreen> {
         radius: 48.0,
         child: Row(
           children: [
-            Icon(Icons.done_all, color: ProtoTheme.yellow),
+            Icon(Icons.done_all, color: Colors.white),
             Text(
-              'Garbageideas',
-              style: TextStyle(color: ProtoTheme.yellow),
+              'Garbageideas Todolist',
+              style: TextStyle(color: Colors.white),
             ),
           ],
           mainAxisAlignment: MainAxisAlignment.center,
@@ -88,6 +88,7 @@ class _HomeScreenState extends State<HomeScreen> {
         },
         padding: EdgeInsets.all(12),
         color: Colors.white,
+        elevation: ProtoTheme.elevationLayerOne,
         child: Text('Log In', style: TextStyle(color: Colors.black)),
       ),
     );
@@ -102,7 +103,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return Scaffold(
       key: _scaffoldKey,
-      backgroundColor: ProtoTheme.darkBlue,
+      backgroundColor: ProtoTheme.purple,
       body: Builder(
           builder: (conxtext) => Center(
                 child: ListView(

@@ -7,13 +7,13 @@ import 'package:flutter/material.dart';
 // copied from vanilla archtecture example
 class ProtoTheme {
 
-  static const darkBlue = Color(0xff173f5f);
+  static var purple = Colors.deepPurple[400];
   static const blue = Color(0xff20639b);
   static const green = Color(0xff3caea3);
   static const yellow = Color(0xfff6d55c);
   static const red = Color(0xffed553b);
 
-  static const num elevationLayerOne = 2.0;
+  static const num elevationLayerOne = 4.0;
 
 
   static get theme {
@@ -21,7 +21,7 @@ class ProtoTheme {
     final originalBody1 = originalTextTheme.body1;
 
     return ThemeData.light().copyWith(
-        primaryColor: ProtoTheme.darkBlue,
+        primaryColor: ProtoTheme.purple,
         accentColor: Colors.indigoAccent[300],
         buttonColor: Colors.indigo[800],
         textSelectionColor: ProtoTheme.yellow,
@@ -29,7 +29,7 @@ class ProtoTheme {
         toggleableActiveColor: ProtoTheme.yellow,
         floatingActionButtonTheme: FloatingActionButtonThemeData (
 //          foregroundColor: Colors.black,
-          backgroundColor: ProtoTheme.darkBlue,
+          backgroundColor: ProtoTheme.purple,
         ),
         textTheme: originalTextTheme.copyWith(
             body1:
