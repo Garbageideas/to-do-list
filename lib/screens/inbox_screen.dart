@@ -94,23 +94,25 @@ class _InboxScreenState extends State<InboxScreen> {
       ),
     );
 
-    final _bottomNavigationBar = CurvedNavigationBar(
-      color: ProtoTheme.purple,
-      backgroundColor: Colors.transparent,
-      buttonBackgroundColor: Colors.transparent,
-      animationDuration: Duration(milliseconds: 100),
-
-      /*
+    final _bottomNavigationBar = BottomNavigationBar(
+      items: const <BottomNavigationBarItem>[
+        BottomNavigationBarItem(
+          icon: Icon(Icons.inbox),
+          title: Text('Inbox'),
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.calendar_view_day),
+          title: Text('Timeline'),
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.playlist_add_check),
+          title: Text('Project'),
+        ),
+      ],
       currentIndex: 0,
       backgroundColor: ProtoTheme.purple,
       unselectedItemColor: Colors.white,
       selectedItemColor: ProtoTheme.yellow,
-      */
-      items: <Widget>[
-        Icon(Icons.inbox, size: 30),
-        Icon(Icons.calendar_view_day, size: 30),
-        Icon(Icons.playlist_add_check, size: 30),
-      ],
       onTap: (int newTab) => {},
     );
 
