@@ -183,12 +183,15 @@ class _TaskWidgetState extends State<TaskWidget> {
             ),
             title: Container(
               child: TextField(
+                cursorColor: ProtoTheme.yellow,
                 style: _todos.getChecked(index)
                     ? _checkedTxtStyle
                     : _notCheckedTxtStyle,
                 autocorrect: false,
                 controller: _textController,
-                decoration: InputDecoration(border: InputBorder.none),
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                ),
                 onChanged: (text) {
                   _todos.setName(index, text);
                 },
@@ -204,7 +207,63 @@ class _TaskWidgetState extends State<TaskWidget> {
           ),
           isThisEditing
               ? SizedBox(
-                  height: 50,
+                  height: 150,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text('Project :'),
+                      SizedBox(
+                        width: 5.0,
+                      ),
+                      ChoiceChip(
+                        disabledColor: Colors.white,
+                        selectedColor: ProtoTheme.purple,
+                        selected: true,
+                        shape: StadiumBorder(
+                            side: BorderSide(
+                          color: ProtoTheme.purple,
+                          width: 2.0,
+                        )),
+                        label: Text(
+                          'Study',
+                          style: TextStyle(color: ProtoTheme.yellow),
+                        ),
+                        labelStyle: TextStyle(color: ProtoTheme.yellow),
+                      ),
+                      SizedBox(
+                        width: 5.0,
+                      ),
+                      ChoiceChip(
+                        disabledColor: Colors.white,
+                        selectedColor: ProtoTheme.yellow,
+                        selected: false,
+                        shape: StadiumBorder(
+                            side: BorderSide(
+                          color: ProtoTheme.purple,
+                          width: 2.0,
+                        )),
+                        label: Text(
+                          'Cell',
+                        ),
+                        labelStyle: TextStyle(color: Colors.black),
+                      ),
+                      SizedBox(
+                        width: 5.0,
+                      ),
+                      ChoiceChip(
+                        disabledColor: Colors.white,
+                        selectedColor: ProtoTheme.yellow,
+                        selected: false,
+                        shape: StadiumBorder(
+                            side: BorderSide(
+                          color: ProtoTheme.purple,
+                          width: 2.0,
+                        )),
+                        label: Text('Cell'),
+                        labelStyle: TextStyle(color: Colors.black),
+                      ),
+                    ],
+                  ),
                 )
               : SizedBox(
                   height: 0,
