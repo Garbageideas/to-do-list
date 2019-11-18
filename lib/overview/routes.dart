@@ -6,6 +6,7 @@ import 'package:to_do_list/screens/project_screen.dart';
 import 'package:to_do_list/screens/timeline_screen.dart';
 import 'package:to_do_list/screens/review_screen.dart';
 import 'package:to_do_list/screens/setting_screen.dart';
+import 'package:to_do_list/screens/test_screen.dart';
 
 class ScreenRoutes {
   static final home = "/";
@@ -15,6 +16,7 @@ class ScreenRoutes {
   static final timeline = "/timeline";
   static final review = "/review";
   static final setting = "/setting";
+  static final test = "/test";
 
   static final initialRoute = home;
 
@@ -23,9 +25,9 @@ class ScreenRoutes {
     ScreenRoutes.inbox: (context) => InboxScreen(),
     ScreenRoutes.organizer: (context) => OrganizerScreen(),
     ScreenRoutes.project: (context) => ProjectScreen(),
-    ScreenRoutes.timeline: (context) => TimelineScreen(),    
+    ScreenRoutes.timeline: (context) => TimelineScreen(),
     ScreenRoutes.review: (context) => ReviewScreen(),
     ScreenRoutes.setting: (context) => SettingScreen(),
+    ScreenRoutes.test: (context) => TestScreen(),
   };
 }
-
