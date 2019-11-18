@@ -7,7 +7,20 @@ import 'package:to_do_list/overview/theme.dart';
 import 'package:to_do_list/overview/routes.dart';
 import 'package:to_do_list/models/todos.dart';
 
-class InboxScreen extends StatelessWidget {
+enum TaskEditingState {
+  nothingEditing,
+  thisIsEditing,
+  anotherTaskIsEdting,
+}
+
+class InboxScreen extends StatefulWidget {
+  @override
+  _InboxScreenState createState() => _InboxScreenState();
+}
+
+class _InboxScreenState extends State<InboxScreen> {
+  bool isSomethingTaskEditing;
+
   @override
   Widget build(BuildContext context) {
     var _todos = Provider.of<TodosModel>(context);
@@ -56,7 +69,6 @@ class InboxScreen extends StatelessWidget {
                               child: Padding(
                                 padding: const EdgeInsets.all(5.0),
                                 child: Center(
-                                  //alignment: Alignment.centerRight,
                                   child: Text(
                                     'SWIPE TO REMOVE',
                                     style: TextStyle(
@@ -69,7 +81,9 @@ class InboxScreen extends StatelessWidget {
                           ),
                         ),
                         child: TaskWidget(
-                            index: index, name: todos.getName(index)),
+                            index: index,
+                            name: todos.getName(index),
+                            isSomethingTaskEditing: false),
                       );
                     });
               },
@@ -123,20 +137,26 @@ class InboxScreen extends StatelessWidget {
 class TaskWidget extends StatefulWidget {
   final int index;
   final String name;
+  final bool isSomethingTaskEditing;
 
-  TaskWidget({this.index, this.name});
+  TaskWidget({this.index, this.name, this.isSomethingTaskEditing});
 
   @override
-  _TaskWidgetState createState() => _TaskWidgetState(index: index, name: name);
+  _TaskWidgetState createState() => _TaskWidgetState(
+      index: index, name: name, isSomethingTaskEditing: isSomethingTaskEditing);
 }
 
 class _TaskWidgetState extends State<TaskWidget> {
   final int index;
   final String name;
+  final bool isSomethingTaskEditing;
+  bool isThisEditing;
   TextEditingController _textController;
+  bool get isBlocked => isSomethingTaskEditing && !isThisEditing;
 
-  _TaskWidgetState({this.index, this.name}) {
+  _TaskWidgetState({this.index, this.name, this.isSomethingTaskEditing}) {
     _textController = TextEditingController(text: name);
+    isThisEditing = false;
   }
 
   @override
@@ -147,32 +167,48 @@ class _TaskWidgetState extends State<TaskWidget> {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(15.0),
       ),
-      elevation: ProtoTheme.elevationLayerOne,
+      elevation: isThisEditing
+          ? ProtoTheme.elevationLayerThree
+          : ProtoTheme.elevationLayerOne,
       margin: EdgeInsets.symmetric(vertical: 8.0),
-      child: ListTile(
-        leading: CircularCheckBox(
-          value: _todos.getChecked(index),
-          onChanged: (bool newValue) {
-            _todos.setChecked(index, newValue);
-          },
-        ),
-        title: Container(
-          child: TextField(
-            style: _todos.getChecked(index)
-                ? _checkedTxtStyle
-                : _notCheckedTxtStyle,
-            autocorrect: false,
-            controller: _textController,
-            decoration: InputDecoration.collapsed(hintText: 'Type your task.'),
-            onChanged: (text) {
-              _todos.setName(index, text);
-            },
+      child: Column(
+        children: <Widget>[
+          ListTile(
+            leading: CircularCheckBox(
+              value: _todos.getChecked(index),
+              onChanged: (bool newValue) {
+                _todos.setChecked(index, newValue);
+              },
+            ),
+            title: Container(
+              child: TextField(
+                style: _todos.getChecked(index)
+                    ? _checkedTxtStyle
+                    : _notCheckedTxtStyle,
+                autocorrect: false,
+                controller: _textController,
+                decoration: InputDecoration(border: InputBorder.none),
+                onChanged: (text) {
+                  _todos.setName(index, text);
+                },
+              ),
+            ),
+            trailing: IconButton(
+              icon: Icon(isThisEditing
+                  ? Icons.keyboard_arrow_down
+                  : Icons.keyboard_arrow_right),
+              onPressed: () => setState(() =>
+                  isThisEditing ? isThisEditing = false : isThisEditing = true),
+            ),
           ),
-        ),
-        trailing: IconButton(
-          icon: Icon(Icons.keyboard_arrow_right),
-          onPressed: () => Navigator.pushNamed(context, ScreenRoutes.organizer),
-        ),
+          isThisEditing
+              ? SizedBox(
+                  height: 50,
+                )
+              : SizedBox(
+                  height: 0,
+                ),
+        ],
       ),
     );
   }

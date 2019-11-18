@@ -14,6 +14,8 @@ class ProtoTheme {
   static const red = Color(0xffed553b);
 
   static const num elevationLayerOne = 4.0;
+  static const num elevationLayerTwo = elevationLayerOne*2;
+  static const num elevationLayerThree = elevationLayerOne*3;
 
 
   static get theme {
