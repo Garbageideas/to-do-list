@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:circular_check_box/circular_check_box.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
-import 'package:backdrop/backdrop.dart';
 
 import 'package:to_do_list/overview/theme.dart';
 import 'package:to_do_list/overview/routes.dart';
@@ -21,7 +20,6 @@ class InboxScreen extends StatefulWidget {
 }
 
 class _InboxScreenState extends State<InboxScreen> {
-  final GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
   bool isSomethingTaskEditing;
 
   @override
@@ -51,11 +49,10 @@ class _InboxScreenState extends State<InboxScreen> {
           Flexible(
             child: Consumer<TodosModel>(
               builder: (context, todos, child) {
-                return AnimatedList(
-                    key: _listKey,
+                return ListView.builder(
                     padding: EdgeInsets.all(8.0),
-                    //initialItemCount: todos.length,
-                    itemBuilder: (context, index, animation) {
+                    itemCount: todos.length,
+                    itemBuilder: (context, index) {
                       return Dismissible(
                         key: todos.getKey(index),
                         onDismissed: (direction) {
@@ -66,21 +63,18 @@ class _InboxScreenState extends State<InboxScreen> {
                         },
                         background: Padding(
                           padding: EdgeInsets.symmetric(vertical: 20.0),
-                          child: SizeTransition(
-                            sizeFactor: animation,
+                          child: Container(
+                            alignment: Alignment.center,
+                            color: ProtoTheme.red,
                             child: Container(
-                              alignment: Alignment.center,
-                              color: ProtoTheme.red,
-                              child: Container(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(5.0),
-                                  child: Center(
-                                    child: Text(
-                                      'SWIPE TO REMOVE',
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold),
-                                    ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(5.0),
+                                child: Center(
+                                  child: Text(
+                                    'SWIPE TO REMOVE',
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold),
                                   ),
                                 ),
                               ),
@@ -157,50 +151,24 @@ class _TaskWidgetState extends State<TaskWidget> {
   final int index;
   final String name;
   final bool isSomethingTaskEditing;
-  bool isDetailsEditing;
+  bool isThisEditing;
   TextEditingController _textController;
-  TextEditingController _detailProjectController;
+  bool get isBlocked => isSomethingTaskEditing && !isThisEditing;
 
   _TaskWidgetState({this.index, this.name, this.isSomethingTaskEditing}) {
     _textController = TextEditingController(text: name);
-    _detailProjectController = TextEditingController(text: '');
-    isDetailsEditing = false;
+    isThisEditing = false;
   }
 
   @override
   Widget build(BuildContext context) {
     TodosModel _todos = Provider.of<TodosModel>(context);
 
-    final _detailsEditor = Column(
-      children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.all(30.0),
-          child: Row(
-            children: <Widget>[
-              Text(
-                'Project:',
-                style: TextStyle(color: Colors.black),
-              ),
-              /*TextField(
-                autocorrect: false,
-                controller: _detailProjectController,
-                decoration: InputDecoration(border: InputBorder.none),
-              ),
-              */
-            ],
-          ),
-        ),
-        SizedBox(
-          height: 40,
-        ),
-      ],
-    );
-
     return Card(
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(25.0),
+        borderRadius: BorderRadius.circular(30.0),
       ),
-      elevation: isDetailsEditing
+      elevation: isThisEditing
           ? ProtoTheme.elevationLayerThree
           : ProtoTheme.elevationLayerOne,
       margin: EdgeInsets.symmetric(vertical: 8.0),
@@ -227,16 +195,17 @@ class _TaskWidgetState extends State<TaskWidget> {
               ),
             ),
             trailing: IconButton(
-              icon: Icon(isDetailsEditing
+              icon: Icon(isThisEditing
                   ? Icons.keyboard_arrow_down
                   : Icons.keyboard_arrow_right),
-              onPressed: () => setState(() => isDetailsEditing
-                  ? isDetailsEditing = false
-                  : isDetailsEditing = true),
+              onPressed: () => setState(() =>
+                  isThisEditing ? isThisEditing = false : isThisEditing = true),
             ),
           ),
-          isDetailsEditing
-              ? _detailsEditor
+          isThisEditing
+              ? SizedBox(
+                  height: 50,
+                )
               : SizedBox(
                   height: 0,
                 ),

@@ -18,7 +18,7 @@ class ScreenRoutes {
   static final setting = "/setting";
   static final test = "/test";
 
-  static final initialRoute = home;
+  static final initialRoute = inbox;
 
   static final Map<String, WidgetBuilder> routes = {
     ScreenRoutes.home: (context) => HomeScreen(),
