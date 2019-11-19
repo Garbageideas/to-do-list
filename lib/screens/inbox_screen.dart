@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
 import 'package:circular_check_box/circular_check_box.dart';
-import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 
 import 'package:to_do_list/overview/theme.dart';
-import 'package:to_do_list/overview/routes.dart';
 import 'package:to_do_list/models/todos.dart';
 
 enum TaskEditingState {
@@ -21,6 +19,7 @@ class InboxScreen extends StatefulWidget {
 
 class _InboxScreenState extends State<InboxScreen> {
   bool isSomethingTaskEditing;
+  bool autoFocusOfTextEdit = true;
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +42,12 @@ class _InboxScreenState extends State<InboxScreen> {
     );
 
     final _body = GestureDetector(
-      onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
+      onTap: () {
+        FocusScopeNode currentFocus = FocusScope.of(context);
+        if (!currentFocus.hasPrimaryFocus) {
+          currentFocus.unfocus();
+        }
+      },
       child: Column(
         children: <Widget>[
           Flexible(
@@ -60,6 +64,7 @@ class _InboxScreenState extends State<InboxScreen> {
                           Scaffold.of(context).showSnackBar(SnackBar(
                             content: Text('Removed.'),
                           ));
+                          autoFocusOfTextEdit = false;
                         },
                         background: Padding(
                           padding: EdgeInsets.symmetric(vertical: 20.0),
@@ -82,9 +87,11 @@ class _InboxScreenState extends State<InboxScreen> {
                           ),
                         ),
                         child: TaskWidget(
-                            index: index,
-                            name: todos.getName(index),
-                            isSomethingTaskEditing: false),
+                          index: index,
+                          name: todos.getName(index),
+                          isSomethingTaskEditing: false,
+                          autoFocus: autoFocusOfTextEdit,
+                        ),
                       );
                     });
               },
@@ -121,6 +128,7 @@ class _InboxScreenState extends State<InboxScreen> {
       elevation: ProtoTheme.elevationLayerOne,
       onPressed: () {
         _todos.add(Task());
+        autoFocusOfTextEdit = true;
       },
       label: Text('Quick Add'),
       icon: Icon(Icons.add),
@@ -139,12 +147,17 @@ class TaskWidget extends StatefulWidget {
   final int index;
   final String name;
   final bool isSomethingTaskEditing;
+  final bool autoFocus;
 
-  TaskWidget({this.index, this.name, this.isSomethingTaskEditing});
+  TaskWidget(
+      {this.index, this.name, this.isSomethingTaskEditing, this.autoFocus});
 
   @override
   _TaskWidgetState createState() => _TaskWidgetState(
-      index: index, name: name, isSomethingTaskEditing: isSomethingTaskEditing);
+        index: index,
+        name: name,
+        isSomethingTaskEditing: isSomethingTaskEditing,
+      );
 }
 
 class _TaskWidgetState extends State<TaskWidget> {
@@ -183,6 +196,7 @@ class _TaskWidgetState extends State<TaskWidget> {
             ),
             title: Container(
               child: TextField(
+                autofocus: widget.autoFocus,
                 cursorColor: ProtoTheme.yellow,
                 style: _todos.getChecked(index)
                     ? _checkedTxtStyle
