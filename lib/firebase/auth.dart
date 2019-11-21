@@ -19,9 +19,9 @@ abstract class BaseAuth {
 }
 
 class TodoAuthResult {
-   int resultCode; // 일단 귀찮으니 성공 0 실패 1
-   String resultMsg;
-   FirebaseUser user;
+  int resultCode; // Success: 0, Fail: 1 (Temporary)
+  String resultMsg;
+  FirebaseUser user;
    
 }
 

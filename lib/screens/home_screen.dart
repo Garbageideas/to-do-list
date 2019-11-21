@@ -72,26 +72,26 @@ class _HomeScreenState extends State<HomeScreen> {
           borderRadius: BorderRadius.circular(24),
         ),
         onPressed: () {
-          if (_emailBoxController.text.trim() == "" || _passwordBoxController.text.trim() == "") {
+          if (_emailBoxController.text.trim() == "" ||
+              _passwordBoxController.text.trim() == "") {
             _showSnackBar("User and  Password cannot be empty");
             return;
           }
 
-          // TODO : id & pass 를 regex로 걸러주는 코드 필요
+          // TODO : id & pass, regex filtering needed.
           // var result = auth.signUp(_emailBoxController.text, _passwordBoxController.text);
           // if (result == true)
 
-            if (LoginDetails.checkUser(_emailBoxController.text)) {
-              if (LoginDetails.checkPass(
-                  _emailBoxController.text, _passwordBoxController.text)) {
-                Navigator.of(context).pushNamed(ScreenRoutes.inbox);
-              } else {
-                _showSnackBar("Incorrect Password");
-              }
+          if (LoginDetails.checkUser(_emailBoxController.text)) {
+            if (LoginDetails.checkPass(
+                _emailBoxController.text, _passwordBoxController.text)) {
+              Navigator.of(context).pushNamed(ScreenRoutes.inbox);
             } else {
-              _showSnackBar("User Does not Exist");
+              _showSnackBar("Incorrect Password");
             }
-          
+          } else {
+            _showSnackBar("User Does not Exist");
+          }
         },
         padding: EdgeInsets.all(12),
         color: Colors.white,
