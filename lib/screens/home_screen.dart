@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:to_do_list/firebase/auth.dart';
+
 import 'package:to_do_list/overview/routes.dart';
 import 'package:to_do_list/overview/theme.dart';
 import 'package:to_do_list/models/login_details.dart';
@@ -11,7 +11,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final BaseAuth auth = Auth();
+  //final BaseAuth _auth = Auth();
+  //final KaKaoAuth _kakaoAuth = KaKaoAuth();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   TextEditingController _emailBoxController;
   TextEditingController _passwordBoxController;
@@ -81,6 +82,8 @@ class _HomeScreenState extends State<HomeScreen> {
           // TODO : id & pass, regex filtering needed.
           // var result = auth.signUp(_emailBoxController.text, _passwordBoxController.text);
           // if (result == true)
+
+            //_kakaoAuth.signIn();
 
           if (LoginDetails.checkUser(_emailBoxController.text)) {
             if (LoginDetails.checkPass(

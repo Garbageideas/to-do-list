@@ -1,4 +1,5 @@
 
+/*
 import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -78,3 +79,5 @@ class Auth implements BaseAuth {
     return user.isEmailVerified;
   }
 }
+
+*/
